@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Quickzo - Your Cart</title>
+  <link rel="stylesheet" href="cart.css">
+  <link rel="stylesheet" href="Style.css">
+</head>
+<body>
+
+  <div class="header">
+    <img id="img" src="images/generate_a_logo_imag-removebg-preview.png" alt="Logo">
+    <div id="Nav-right">
+      <div class="cart-button">
+        <div class="cart-emoji">🛒</div>
+        <div class="cart-text">Your Cart</div>
+      </div>
+      <div class="login">
+        <a href="signup.html">
+          <img id="login" src="images/login.webp" alt="Login">
+        </a>
+        <div>Login</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cart-container">
+    <h2>Your Shopping Cart</h2>
+
+    <!-- Cart Items -->
+    <div class="cart-items">
+      <!-- Example Item -->
+      <div class="cart-item">
+        <img src="images/apple.jpg" alt="Item Image">
+        <div class="item-details">
+          <h4>Fresh Red Apples (1kg)</h4>
+          <p>₹120</p>
+          <button class="remove-item">Remove</button>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <img src="images/milk.png" alt="Item Image">
+        <div class="item-details">
+          <h4>Amul Toned Milk (1L)</h4>
+          <p>₹60</p>
+          <button class="remove-item">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Section -->
+    <div class="cart-summary">
+      <h3>Total: ₹180</h3>
+      <a href="pay.html"><button class="checkout-btn">Proceed to Checkout</button></a>
+    </div>
+  </div>
+
+</body>
+</html>

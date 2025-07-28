@@ -1,0 +1,202 @@
+.header {
+  display: flex;
+  justify-content: space-between; /* Items pushed to opposite horizontal edges */
+  align-items: center;            /* Vertically centers them in the same line */
+  padding: 10px 20px;
+  background-color: #eaeaea;
+}
+.btn{
+    background-color: lightgray;
+    color: black;
+    text-decoration: none;
+    padding: 8px;
+    margin: 10px;
+    border-radius: 60px;
+    text-transform: uppercase;
+   }
+
+.name{
+    background-color: rgb(15, 130, 63);
+    color: white;
+}
+
+/*.btn-danger{
+    background-color: rgba(255, 0, 0, 0.689);
+    color: white;
+}*/
+/* font weight is the thickness of the font .... font size is the size of the font, generally given in pixels  */
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  border: 2px solid green;
+  border-radius: 5px;
+  background-color: #69db39;
+}
+
+.sign-in{
+  font-size: 16px;
+  color: #007bff;
+  cursor: pointer;
+  text-align: right;
+}
+.search-wrapper {
+  width: 100%;
+  padding: 20px;
+  background-color: #f9f9f9;
+  /* position: fixed; */
+}
+
+form {
+  display: flex;
+  width: 100%;
+  max-width: 800px; /* Optional max width */
+  margin: 0 auto;   /* Center the form */
+}
+
+input[type="text"] {
+  flex: 1; /* Takes up remaining space */
+  padding: 12px;
+  font-size: 18px;
+  border: 2px solid #ccc;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+}
+
+button {
+  background-color: #32840f;
+  padding: 8px;
+  font-size: 18px;
+  text-decoration: none;
+  color: white;
+  border: none;
+  border-radius: 0 8px 8px 0;
+  cursor: pointer;
+}
+#img
+{
+  width: 200px;
+  height: 200px;
+  margin: 2px;
+}
+
+.cart-button {
+    display: inline-block;
+    flex-direction: column;
+    align-items: center;
+   margin-right: 50px;
+    padding: 10px;
+    border-radius: 8px;
+    width: 90px;
+    height: 70px;
+    cursor: pointer;
+    vertical-align: top;
+}
+
+.cart-emoji {
+    font-size: 40px; /* Adjust size as needed */
+}
+
+.cart-text {
+    color: black;
+    font-size: 20px;
+    margin-top: 3px;
+}
+.login {
+    display: inline-block;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    width: 90px;
+    height: 70px;
+    cursor: pointer;
+    vertical-align: top;
+    color: black;
+    font-size: 20px;
+    margin-top: 3px;
+    text-decoration:none;
+
+}
+#login
+{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.foo>img{
+  height:250px;
+  width:250px;
+}
+
+.product-card>img{
+  height:250px;
+  width:250px;
+
+}
+/* .login-text
+{
+  color: black;
+    font-size: 20px;
+    margin-top: 3px;
+text-decoration:dashed;
+} */
+.main{
+  display: inline-block;
+  margin: 40px;
+}
+.add-to-cart
+{
+  display: flex;
+  text-align: center;
+  margin: auto;
+place-items: center;
+justify-content: center;
+text-decoration: none;
+}
+* a{
+text-decoration: none;
+}
+#last
+{
+  background-color: rgb(45, 126, 31);
+  color:#f9f9f9
+  
+}
+
+.quick-links{
+  height:300px;
+  width:100%;
+  background-color:#1a7431;
+}
+.quick-links>div{
+  display:inline-block;
+  color:white;
+  margin:10px;
+  padding:10px;
+  width:23%;
+  vertical-align: top;
+}
+
+body a{
+  text-decoration: none;
+}
+
+pre{
+  font-size: large;
+  font-family: inherit;
+}
+
+.link:link{
+  color:white;
+}
+.link:active{
+  color:white;
+}
+.link:hover{
+  color:white;
+}
+.link:visited{
+  color:white;
+}

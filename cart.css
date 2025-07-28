@@ -1,0 +1,108 @@
+Conversation opened. 1 unread message.
+
+Skip to content
+Using Gmail with screen readers
+1 of 1,295
+cart
+Inbox
+
+Dhruv Hemdev
+Attachments
+1:01 PM (1 minute ago)
+to me
+
+
+
+ 2 Attachments
+  •  Scanned by Gmail
+Gemini
+Summarize this email
+in more detail
+What can Gemini do
+in Gmail
+List action items
+from this email
+Sales pitch ideator
+Create compelling sales pitches that resonate with your audience and drive conversions.
+Outreach specialist
+Craft personalized messages to potential customers, build relationships, and drive engagement.
+Copy creator
+Get help writing branded content that appeals to your audience.
+Your Gems will appear across Workspace
+Gemini for Workspace can make mistakes, including about people, so double-check it. Learn more
+Compose:
+New Message
+MinimizePop-outClose
+.cart-container {
+  width: 90%;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+}
+
+.cart-container h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2e7d32;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cart-item {
+  display: flex;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  align-items: center;
+}
+
+.cart-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 8px;
+}
+
+.item-details h4 {
+  margin: 0 0 10px;
+  color: #333;
+}
+
+.item-details p {
+  margin: 0;
+  font-weight: bold;
+}
+
+.remove-item {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #d32f2f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-summary {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.checkout-btn {
+  padding: 10px 20px;
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+style.css
+Displaying style.css.
