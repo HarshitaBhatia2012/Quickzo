@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Track Your Order</title>
+  <link rel="stylesheet" href="rider-info.css" />
+</head>
+<body>
+  <div id="od">
+    <img  src="images/tick.webp" alt="cannot load">
+    <h2>YOUR ORDER IS CONFIRMED!</h2>
+  </div>
+  <div class="container">
+    <h2>Track Your Order</h2>
+
+    <div class="rider-section">
+      <img id="rider" src="rider.jpeg" alt="Rider" />
+      <div>
+        <p><strong>Rider:</strong> Rahul Mehra</p>
+        <p><strong>Contact:</strong> <a href="tel:+919876543210" class="phone">+91-9876543210</a></p>
+      </div>
+    </div>
+
+    <div class="status-section">
+      <p><strong>Status:</strong> <span id="statusText">Order Picked</span></p>
+      <p><strong>ETA:</strong> <span id="etaText">5 minutes</span></p>
+      <div class="progress-bar">
+        <div class="progress" id="progressBar" style="width: 30%;"></div>
+      </div>
+    </div>
+
+    <div class="map-section">
+      <h3>Live Delivery Location</h3>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609814474!2d72.74109964346034!3d19.082197838916207!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b63ee8c4b971%3A0x6c7c63cb986c9ad!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1624894369343!5m2!1sen!2sin"
+        width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy" id="map">
+      </iframe>
+    </div>
+
+    <div class="button-group">
+      <a href="tel:+919876543210" class="btn call">📞 Call Rider</a>
+      <button class="btn cancel" onclick="cancelDelivery()">❌ Cancel Delivery</button>
+    </div>
+  </div>
+
+  <script src="rider-info.js"></script>
+</body>
+</html>
