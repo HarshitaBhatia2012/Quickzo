@@ -5,6 +5,12 @@ pipeline {
         COMPOSE_FILE = 'compose.yaml'
         REPO_URL     = 'https://github.com/HarshitaBhatia2012/Quickzo.git'
         BRANCH_NAME  = 'master'
+        // Database connection settings for tests and container communication
+        DB_HOST      = 'quickzo-mysql'
+        DB_PORT      = '3306'
+        DB_NAME      = 'quickzo'
+        DB_USERNAME  = 'quickzo_user'
+        DB_PASSWORD  = 'quickzo_password'
     }
 
     stages {
@@ -66,6 +72,24 @@ pipeline {
                         if (isUnix()) {
                             sh '''
                                 chmod +x ./gradlew
+
+                                # Pre-check Gradle wrapper to prevent java.net.ConnectException redirect failure
+                                WRAPPER_DIST_DIR="$HOME/.gradle/wrapper/dists/gradle-8.14.3-bin"
+                                if [ ! -d "$WRAPPER_DIST_DIR"/*/*/bin ]; then
+                                    echo "Pre-fetching Gradle distribution to prevent Java HttpURLConnection redirect timeout..."
+                                    mkdir -p "$WRAPPER_DIST_DIR"
+                                    ./gradlew --version >/dev/null 2>&1 || true
+                                    TARGET_HASH=$(find "$WRAPPER_DIST_DIR" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | head -n 1)
+                                    if [ -n "$TARGET_HASH" ] && [ ! -d "$TARGET_HASH"/*/bin ]; then
+                                        rm -f "$TARGET_HASH"/*.part "$TARGET_HASH"/*.lck
+                                        if [ -f /tmp/gradle-8.14.3-bin.zip ]; then
+                                            cp /tmp/gradle-8.14.3-bin.zip "$TARGET_HASH/gradle-8.14.3-bin.zip"
+                                        else
+                                            curl -s -L -f --retry 3 -o "$TARGET_HASH/gradle-8.14.3-bin.zip" https://services.gradle.org/distributions/gradle-8.14.3-bin.zip || true
+                                        fi
+                                    fi
+                                fi
+
                                 # Compile, run test suite, and generate executable Spring Boot JAR
                                 ./gradlew clean test bootJar --no-daemon
                             '''
