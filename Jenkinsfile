@@ -2,15 +2,20 @@ pipeline {
     agent any
 
     environment {
-        COMPOSE_FILE = 'compose.yaml'
-        REPO_URL     = 'https://github.com/HarshitaBhatia2012/Quickzo.git'
-        BRANCH_NAME  = 'master'
+        COMPOSE_PROJECT_NAME = 'quickzo-2ndyearminiproject'
+        COMPOSE_FILE         = 'compose.yaml'
+        REPO_URL             = 'https://github.com/HarshitaBhatia2012/Quickzo.git'
+        BRANCH_NAME          = 'master'
         // Database connection settings for tests and container communication
-        DB_HOST      = 'quickzo-mysql'
-        DB_PORT      = '3306'
-        DB_NAME      = 'quickzo'
-        DB_USERNAME  = 'quickzo_user'
-        DB_PASSWORD  = 'quickzo_password'
+        DB_HOST              = 'quickzo-mysql'
+        DB_PORT              = '3306'
+        DB_NAME              = 'quickzo'
+        DB_USERNAME          = 'quickzo_user'
+        DB_PASSWORD          = 'quickzo_password'
+        MYSQL_ROOT_PASSWORD  = 'rootpassword'
+        DB_EXTERNAL_PORT     = '3307'
+        BACKEND_PORT         = '8081'
+        FRONTEND_PORT        = '80'
     }
 
     stages {
@@ -114,9 +119,9 @@ pipeline {
                 script {
                     echo "Building Docker container images from project root using ${COMPOSE_FILE}..."
                     if (isUnix()) {
-                        sh "docker compose -f ${COMPOSE_FILE} build"
+                        sh "docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} build"
                     } else {
-                        bat "docker compose -f ${COMPOSE_FILE} build"
+                        bat "docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} build"
                     }
                 }
             }
@@ -150,21 +155,6 @@ pipeline {
                         useJenkinsCredentials = false
                     }
 
-                    // Prepare runtime environment in a fresh workspace if .env does not exist
-                    if (!fileExists('.env')) {
-                        if (fileExists('.env.example')) {
-                            echo "Notice: Fresh workspace detected without .env. Preparing runtime .env from .env.example..."
-                            if (isUnix()) {
-                                sh 'cp .env.example .env'
-                            } else {
-                                bat 'copy .env.example .env'
-                            }
-                        } else {
-                            echo "Notice: Neither .env nor .env.example found; relying on compose.yaml environment defaults."
-                        }
-                    }
-
-                    // Execute deployment without catching/suppressing deployment failures
                     if (useJenkinsCredentials) {
                         echo "Deploying with credentials injected from Jenkins Credentials Store..."
                         withCredentials([
@@ -179,17 +169,50 @@ pipeline {
                             )
                         ]) {
                             if (isUnix()) {
-                                sh "docker compose -f ${COMPOSE_FILE} up -d --remove-orphans"
+                                sh """
+                                    cat << 'EOF' > .env
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
+DB_NAME=${DB_NAME}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+DB_EXTERNAL_PORT=${DB_EXTERNAL_PORT}
+BACKEND_PORT=${BACKEND_PORT}
+FRONTEND_PORT=${FRONTEND_PORT}
+EOF
+                                    docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} up -d --remove-orphans
+                                """
                             } else {
-                                bat "docker compose -f ${COMPOSE_FILE} up -d --remove-orphans"
+                                bat """
+                                    docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} up -d --remove-orphans
+                                """
                             }
                         }
                     } else {
-                        echo "Deploying using workspace environment configuration..."
+                        echo "Deploying using pipeline environment configuration..."
                         if (isUnix()) {
-                            sh "docker compose -f ${COMPOSE_FILE} up -d --remove-orphans"
+                            sh """
+                                if [ ! -f .env ] || grep -q 'your_secure_db_password' .env; then
+                                    echo "Configuring workspace .env with pipeline database settings..."
+                                    cat << 'EOF' > .env
+DB_HOST=${DB_HOST}
+DB_PORT=${DB_PORT}
+DB_NAME=${DB_NAME}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+DB_EXTERNAL_PORT=${DB_EXTERNAL_PORT}
+BACKEND_PORT=${BACKEND_PORT}
+FRONTEND_PORT=${FRONTEND_PORT}
+EOF
+                                fi
+                                docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} up -d --remove-orphans
+                            """
                         } else {
-                            bat "docker compose -f ${COMPOSE_FILE} up -d --remove-orphans"
+                            bat """
+                                docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} up -d --remove-orphans
+                            """
                         }
                     }
                 }
@@ -206,7 +229,7 @@ pipeline {
                             echo "=== Waiting for MySQL and Backend services to be healthy ==="
                             
                             # 1. Output container status for diagnostics
-                            docker compose -f compose.yaml ps
+                            docker compose -p ${COMPOSE_PROJECT_NAME} -f compose.yaml ps
 
                             # 2. Verify Frontend HTTP 200 response (fail if unreachable)
                             echo "Checking Frontend HTTP response (port 80)..."
@@ -216,7 +239,7 @@ pipeline {
                                             curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ 2>/dev/null || \
                                             curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:80/ 2>/dev/null || \
                                             curl -s -o /dev/null -w "%{http_code}" http://host.docker.internal:80/ 2>/dev/null || \
-                                            docker compose -f compose.yaml exec -T frontend wget -q -O /dev/null -S http://127.0.0.1/ 2>&1 | grep "HTTP/" | awk '{print $2}' || true)
+                                            docker compose -p ${COMPOSE_PROJECT_NAME} -f compose.yaml exec -T frontend wget -q -O /dev/null -S http://127.0.0.1/ 2>&1 | grep "HTTP/" | awk '{print $2}' || true)
                                 if [ "$HTTP_CODE" = "200" ]; then
                                     echo "Frontend check PASSED: Received HTTP 200 OK"
                                     FRONTEND_READY=1
@@ -241,7 +264,7 @@ pipeline {
                                            curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8081/products 2>/dev/null || \
                                            curl -s -o /dev/null -w "%{http_code}" http://localhost:80/products 2>/dev/null || \
                                            curl -s -o /dev/null -w "%{http_code}" http://host.docker.internal:8081/products 2>/dev/null || \
-                                           docker compose -f compose.yaml exec -T backend wget -q -O /dev/null -S http://127.0.0.1:8081/products 2>&1 | grep "HTTP/" | awk '{print $2}' || true)
+                                           docker compose -p ${COMPOSE_PROJECT_NAME} -f compose.yaml exec -T backend wget -q -O /dev/null -S http://127.0.0.1:8081/products 2>&1 | grep "HTTP/" | awk '{print $2}' || true)
                                 if [ "$API_CODE" = "200" ]; then
                                     echo "Backend API check PASSED: Received HTTP 200 OK on /products"
                                     BACKEND_READY=1
@@ -263,7 +286,7 @@ pipeline {
                             @echo off
                             echo Waiting for services to stabilize...
                             timeout /t 5 /nobreak >nul
-                            docker compose -f compose.yaml ps
+                            docker compose -p %COMPOSE_PROJECT_NAME% -f compose.yaml ps
 
                             echo Testing Frontend endpoint (port 80)...
                             curl -s -f -o nul http://localhost:80/
@@ -300,9 +323,9 @@ pipeline {
             echo '====================================================='
             script {
                 if (isUnix()) {
-                    sh "docker compose -f ${COMPOSE_FILE} logs --tail=100 || true"
+                    sh "docker compose -p ${COMPOSE_PROJECT_NAME} -f ${COMPOSE_FILE} logs --tail=100 || true"
                 } else {
-                    bat "docker compose -f ${COMPOSE_FILE} logs --tail=100"
+                    bat "docker compose -p %COMPOSE_PROJECT_NAME% -f %COMPOSE_FILE% logs --tail=100"
                 }
             }
         }

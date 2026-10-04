@@ -1,3 +1,5 @@
+name: quickzo-2ndyearminiproject
+
 services:
   mysql:
     image: mysql:8.0
