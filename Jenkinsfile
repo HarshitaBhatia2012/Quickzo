@@ -212,7 +212,8 @@ pipeline {
                             echo "Checking Frontend HTTP response (port 80)..."
                             FRONTEND_READY=0
                             for i in $(seq 1 15); do
-                                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ 2>/dev/null || \
+                                HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://quickzo-frontend:80/ 2>/dev/null || \
+                                            curl -s -o /dev/null -w "%{http_code}" http://localhost:80/ 2>/dev/null || \
                                             curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:80/ 2>/dev/null || \
                                             curl -s -o /dev/null -w "%{http_code}" http://host.docker.internal:80/ 2>/dev/null || \
                                             docker compose -f compose.yaml exec -T frontend wget -q -O /dev/null -S http://127.0.0.1/ 2>&1 | grep "HTTP/" | awk '{print $2}' || true)
@@ -234,7 +235,9 @@ pipeline {
                             echo "Checking Backend API response on /products (port 8081 and reverse proxy port 80)..."
                             BACKEND_READY=0
                             for i in $(seq 1 20); do
-                                API_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/products 2>/dev/null || \
+                                API_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://quickzo-backend:8081/products 2>/dev/null || \
+                                           curl -s -o /dev/null -w "%{http_code}" http://quickzo-frontend:80/products 2>/dev/null || \
+                                           curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/products 2>/dev/null || \
                                            curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8081/products 2>/dev/null || \
                                            curl -s -o /dev/null -w "%{http_code}" http://localhost:80/products 2>/dev/null || \
                                            curl -s -o /dev/null -w "%{http_code}" http://host.docker.internal:8081/products 2>/dev/null || \

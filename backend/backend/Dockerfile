@@ -1,22 +1,15 @@
 # Stage 1: Build Spring Boot application using Java 21 and Gradle
-FROM eclipse-temurin:21-jdk-jammy AS builder
+FROM gradle:8.14-jdk21 AS builder
 WORKDIR /app
 
-# Copy Gradle wrapper and build configuration
-COPY gradle/ gradle/
-COPY gradlew gradlew.bat build.gradle settings.gradle ./
-
-# Normalize line endings and grant execute permissions
-RUN sed -i 's/\r$//' gradlew && chmod +x gradlew
-
-# Pre-fetch Gradle dependencies
-RUN ./gradlew dependencies --no-daemon || true
+# Copy build configuration
+COPY build.gradle settings.gradle ./
 
 # Copy application source code
 COPY src/ src/
 
-# Build Spring Boot executable archive
-RUN ./gradlew bootJar --no-daemon -x test
+# Build Spring Boot executable archive (skip tests during container build)
+RUN gradle bootJar --no-daemon -x test
 
 # Stage 2: Minimal Java 21 runtime container
 FROM eclipse-temurin:21-jre-jammy
