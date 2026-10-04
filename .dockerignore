@@ -1,0 +1,11 @@
+.git
+.gitignore
+.vscode
+.idea
+*.zip
+backend/backend/.gradle
+backend/backend/build
+backend/backend/data
+backend/backend/.idea
+backend/backend/.vscode
+*.log

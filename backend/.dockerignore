@@ -1,0 +1,8 @@
+.git
+backend/.gradle
+backend/build
+backend/data
+backend/.idea
+backend/.vscode
+*.zip
+*.log
