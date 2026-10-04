@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = "*") // frontend ke liye CORS allow
+@CrossOrigin(origins = "*") // frontend CORS support
 public class UserController {
 
     private final UserService userService;
@@ -17,20 +17,20 @@ public class UserController {
         this.userService = userService;
     }
 
-    // Signup endpoint
-    @PostMapping("/signup")
+    // Signup endpoint (supports both /signup and /users/signup)
+    @PostMapping({"/signup", "/users/signup"})
     public String signup(@RequestBody User user) {
         return userService.signup(user);
     }
 
-    // Login endpoint
-    @PostMapping("/login")
+    // Login endpoint (supports both /login and /users/login)
+    @PostMapping({"/login", "/users/login"})
     public String login(@RequestBody User user) {
         return userService.login(user);
     }
 
-    // Get usernames endpoint
-    @GetMapping("/users")
+    // Get usernames endpoint (supports both /users and /users/all)
+    @GetMapping({"/users", "/users/all"})
     public List<String> getAllUsernames() {
         return userService.getAllUsernames();
     }

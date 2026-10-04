@@ -1,3 +1,5 @@
+-- Initial products data for Quickzo
+-- Uses INSERT IGNORE to prevent duplicate records and preserve modified data on re-runs
 INSERT IGNORE INTO product (id, name, quantity) VALUES (1, 'Moisturizer', 50);
 INSERT IGNORE INTO product (id, name, quantity) VALUES (2, 'Sunscreen', 50);
 INSERT IGNORE INTO product (id, name, quantity) VALUES (3, 'Serum', 50);
