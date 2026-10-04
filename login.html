@@ -2,24 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #dcdcdc; /* greyish background */
       font-family: Arial, sans-serif;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
 
     .container {
       background-color: #fff;
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      padding: 30px 40px;
-      width: 350px;
+      padding: 30px 25px;
+      width: 100%;
+      max-width: 380px;
       text-align: center;
     }
 
@@ -90,8 +97,8 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    // Correct backend URL and endpoint
-    const response = await fetch("http://localhost:8081/login", {
+    // Backend endpoint routed via Nginx reverse proxy
+    const response = await fetch("/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }) // send as JSON in body

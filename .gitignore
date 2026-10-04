@@ -18,6 +18,13 @@ credentials.json
 *.pfx
 *.p12
 
+# Docker Local Overrides
+docker-compose.override.yml
+docker-compose.override.yaml
+compose.override.yml
+compose.override.yaml
+
+
 # -----------------------------------------------------------------------------
 # Build Outputs & Artifacts
 # -----------------------------------------------------------------------------
@@ -130,3 +137,7 @@ $RECYCLE.BIN/
 *.gz
 *.rar
 *.7z
+
+# Local database backups
+quickzo_backup_before_jenkins.sql
+*.sql.bak
