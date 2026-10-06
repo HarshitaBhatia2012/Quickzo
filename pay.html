@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickZo Payment</title>
+  <style>
+    * { box-sizing: border-box; margin:0; padding:0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f2fdf2; padding: 30px; color: #333; }
+    h2 { text-align: center; color: #2ecc71; margin-bottom: 30px; }
+    .payment-container { max-width: 600px; margin:auto; background:white; padding:30px; border-radius:10px; box-shadow:0 8px 20px rgba(0,0,0,0.1);}
+    label { display:block; margin-bottom:8px; font-weight:bold; color:#27ae60; }
+    input, select { width:100%; padding:12px; margin-bottom:20px; border:1px solid #ccc; border-radius:6px; }
+    input:focus { border-color:#27ae60; outline:none; }
+    .payment-btn { background-color:#27ae60; color:white; padding:15px; border:none; border-radius:8px; width:100%; font-size:16px; cursor:pointer; transition:0.3s; }
+    .payment-btn:hover { background-color:#219150; }
+    .success-msg { display:none; text-align:center; color:#27ae60; font-weight:bold; margin-top:20px; }
+    .qr-code { display:none; text-align:center; margin-bottom:20px; }
+    .qr-code img { width:200px; }
+    @media(max-width:600px) { .payment-container { padding:20px; } }
+  </style>
+</head>
+<body>
+
+<h2>Complete Your Payment</h2>
+
+<div class="payment-container">
+  <form id="paymentForm">
+    <div id="paymentSection">
+      <label for="method">Payment Method</label>
+      <select id="method" required>
+        <option value="">Select</option>
+        <option value="card">Card</option>
+        <option value="upi">UPI</option>
+      </select>
+
+      <!-- Card Fields -->
+      <div id="cardFields" style="display:none;">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="eg-John Doe">
+
+        <label for="card">Card Number</label>
+        <input type="text" id="card" placeholder="eg-1234 5678 9012 3456" maxlength="19">
+
+        <label for="expiry">Expiry Date</label>
+        <input type="text" id="expiry" placeholder="MM/YY" maxlength="5">
+
+        <label for="cvv">CVV</label>
+        <input type="password" id="cvv" placeholder="eg-123" maxlength="3">
+      </div>
+
+      <!-- UPI QR -->
+      <div id="upiFields" class="qr-code">
+        <p>Scan this QR code to pay via UPI:</p>
+        <img src="images/QR code.webp" alt="UPI QR Code">
+      </div>
+
+      <button type="submit" class="payment-btn" id="payNowBtn">Pay Now</button>
+    </div>
+  </form>
+
+  <div class="success-msg" id="successMsg">
+    ✅ Payment Successful! Thank you for shopping with QuickZo.
+  </div>
+
+  <!-- Track Order button hidden initially -->
+  <div id="trackOrderContainer" style="display:none; margin-top: 20px;">
+    <a href="rider-info.html">
+      <button class="payment-btn">Track Order</button>
+    </a>
+  </div>
+</div>
+
+<script>
+const methodSelect = document.getElementById('method');
+const cardFields = document.getElementById('cardFields');
+const upiFields = document.getElementById('upiFields');
+const form = document.getElementById('paymentForm');
+const successMsg = document.getElementById('successMsg');
+const trackOrderContainer = document.getElementById('trackOrderContainer');
+const paymentSection = document.getElementById('paymentSection');
+const payNowBtn = document.getElementById('payNowBtn');
+
+// Show/hide fields based on payment method
+methodSelect.addEventListener('change', () => {
+  if(methodSelect.value === 'card'){
+    cardFields.style.display = 'block';
+    upiFields.style.display = 'none';
+    cardFields.querySelectorAll('input').forEach(i => i.required = true);
+  } else if(methodSelect.value === 'upi'){
+    upiFields.style.display = 'block';
+    cardFields.style.display = 'none';
+    cardFields.querySelectorAll('input').forEach(i => i.required = false);
+  } else {
+    cardFields.style.display = 'none';
+    upiFields.style.display = 'none';
+    cardFields.querySelectorAll('input').forEach(i => i.required = false);
+  }
+});
+
+// Handle form submit
+form.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  
+  // Show success message
+  successMsg.style.display = 'block';
+  
+  // Hide payment form section
+  paymentSection.style.display = 'none';
+  
+  // Show track order button
+  trackOrderContainer.style.display = 'block';
+});
+</script>
+
+</body>
+</html>

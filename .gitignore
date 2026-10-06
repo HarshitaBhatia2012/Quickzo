@@ -1,0 +1,143 @@
+# =============================================================================
+# Root .gitignore for Quickzo E-Commerce Project
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Environment & Secret Configurations (Never commit credentials)
+# -----------------------------------------------------------------------------
+.env
+.env.*
+*.env
+**/.env
+**/.env.*
+!*.env.example
+!**/.env.example
+credentials.json
+*.pem
+*.key
+*.pfx
+*.p12
+
+# Docker Local Overrides
+docker-compose.override.yml
+docker-compose.override.yaml
+compose.override.yml
+compose.override.yaml
+
+
+# -----------------------------------------------------------------------------
+# Build Outputs & Artifacts
+# -----------------------------------------------------------------------------
+build/
+**/build/
+target/
+**/target/
+out/
+**/out/
+bin/
+**/bin/
+*.class
+*.jar
+*.war
+*.ear
+!gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.jar
+
+# -----------------------------------------------------------------------------
+# Gradle Cache & System Files
+# -----------------------------------------------------------------------------
+.gradle/
+**/.gradle/
+gradle-app.setting
+.gradletasknamecache
+
+# Preserve Gradle Wrapper files
+!gradle/wrapper/gradle-wrapper.jar
+!**/gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+!**/gradle/wrapper/gradle-wrapper.properties
+!gradlew
+!**/gradlew
+!gradlew.bat
+!**/gradlew.bat
+
+# -----------------------------------------------------------------------------
+# IDE & Code Editor Files
+# -----------------------------------------------------------------------------
+# VS Code
+.vscode/
+**/.vscode/
+
+# IntelliJ IDEA
+.idea/
+**/.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+**/.settings/
+.springBeans
+.sts4-cache
+
+# NetBeans
+nbproject/
+**/nbproject/
+.nb-gradle/
+**/.nb-gradle/
+
+# -----------------------------------------------------------------------------
+# Database Files & Embedded Databases
+# -----------------------------------------------------------------------------
+*.mv.db
+*.trace.db
+*.db
+*.sqlite
+*.sqlite3
+data/
+**/data/
+mydb.*
+**/mydb.*
+
+# -----------------------------------------------------------------------------
+# Logs & Temporary Files
+# -----------------------------------------------------------------------------
+*.log
+**/*.log
+logs/
+**/logs/
+temp/
+**/temp/
+tmp/
+**/tmp/
+*.tmp
+*.bak
+*.swp
+*~
+
+# -----------------------------------------------------------------------------
+# OS Generated Files
+# -----------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------------------------------------------------------
+# Compressed Archives (Excluded to keep repository clean and lightweight)
+# -----------------------------------------------------------------------------
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+
+# Local database backups
+quickzo_backup_before_jenkins.sql
+*.sql.bak
